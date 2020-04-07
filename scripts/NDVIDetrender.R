@@ -11,7 +11,7 @@
 #' @details This function assumes a structure of data where the years are the last index in the array or the index of the vector.
 #' 
 #' Normalized Difference Vegetation Index (NDVI) data is structured in the format [x,y,t], where
-#' x and y are a 2D mapping of latitude and longitude onto the Advanced Very High Resolution Radiometer coordinates.
+#' x and y are a 2D mapping of latitude(or longitude) and longitude(or lattitude) onto the Advanced Very High Resolution Radiometer coordinates.
 #' Since this data is spatial in nature, it makes sense to store in an array versus a dataframe. This function was written
 #' to break the array into [x,y,] vectors and detrend each vector separately. \code{Pracma}'s function \code{detrend} was perfect
 #' for this task since it handles missing values exactly as needed.

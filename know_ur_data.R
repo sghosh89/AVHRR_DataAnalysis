@@ -11,9 +11,23 @@
 ndvi2000<-read.csv("./data/csvFiles/AVHRR_NDVI_WaterRemoved_2000.csv",header = F)
 class(ndvi2000)
 head(ndvi2000[500,500:505]) # has NA to remove water body
-dim(ndvi2000) #2889 4587 NDVI data is in lat lon format
+dim(ndvi2000) #2889 4587 NDVI data is in comperable to lat lon format
 
 # ok, now you need such data frames for all available years to store into an array
 # so, look for scripts/CSVInput.R - this script is called into the master data generator file: AVHRRDataGenerator.R
 
 # Running AVHRRDataGenerator.R by parts: completed upto detrending
+
+#----------------------NOTES: what I learned from Thomas--------------------------------------------------
+
+# Raw NDVI data for year 1989 have some problem in the dessert region: plot to check it
+#     therefore, detrending starts from 1990.
+
+# Landscan pop data averaging over 2003, 2004 because it is just at the middle in 2000 to 2006
+
+# Thomas guessed chicago has anomaly for 2010 but when he carried out analysis for detrended chicago data 
+#     excluding 2010, still it is not solved - chicago is weird for unknown reason!
+
+#-------------------------------------------------------------------------------------------------------
+
+
