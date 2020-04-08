@@ -51,12 +51,12 @@ AVHRRDataGenerator <- function(force = FALSE){
     NDVIdetrendedDataArray1990[,,1:29] <- NDVIDetrender(NDVIdataArray, 2:30);
     for(i in 1:29){
       write.csv(NDVIdetrendedDataArray1990[,,i], paste("data/csvFiles/AVHRR_DetrendedNDVI1990to2018_", 1989+i, ".csv", sep=""), row.names = FALSE)
+      saveRDS(NDVIdetrendedDataArray1990,"data/csvFiles/NDVIdetrendedDataArray1990to2018.RDS")
     }
   }else{
-    NDVIdetrendedDataArray1990 <- CSVInput(pat="AVHRR_DetrendedNDVI1990to2018_", numFiles=29, skipNum=1, startYear=1989)
+    NDVIdetrendedDataArray1990 <- readRDS("data/csvFiles/NDVIdetrendedDataArray1990to2018.RDS") #time saving than next line
+    #NDVIdetrendedDataArray1990 <- CSVInput(pat="AVHRR_DetrendedNDVI1990to2018_", numFiles=29, skipNum=1, startYear=1989)
   }
-  
-  saveRDS(NDVIdetrendedDataArray1990,"data/csvFiles/NDVIdetrendedDataArray1990to2018.RDS")
   
   print("Detrending NDVI data for Chicago: without Year = 2010.....")
   NDVIdetrendedDataArrayChicago <- array(data = NA, dim = c(4587, 2889, 28))
@@ -64,25 +64,29 @@ AVHRRDataGenerator <- function(force = FALSE){
     NDVIdetrendedDataArrayChicago[,,1:28] <- NDVIDetrender(NDVIdataArray, c(2:21, 23:30));
     for(i in 1:28){
       write.csv(NDVIdetrendedDataArrayChicago[,,i], paste("data/csvFiles/AVHRR_DetrendedNDVIChicago_", i, ".csv", sep=""), row.names = FALSE)
+      saveRDS(NDVIdetrendedDataArrayChicago,"data/csvFiles/NDVIdetrendedDataArrayChicago1990to2018_except2010.RDS") # actually it is for whole US but we are 
+      # focusing on Chicago
     }
   }else{
-    NDVIdetrendedDataArrayChicago <- CSVInput("AVHRR_DetrendedNDVIChicago_", 28, 1, 0)
+    NDVIdetrendedDataArrayChicago <- readRDS("data/csvFiles/NDVIdetrendedDataArrayChicago1990to2018_except2010.RDS") #time saving than next line
+    #NDVIdetrendedDataArrayChicago <- CSVInput("AVHRR_DetrendedNDVIChicago_", 28, 1, 0)
   }
-
-  saveRDS(NDVIdetrendedDataArrayChicago,"data/csvFiles/NDVIdetrendedDataArrayChicago1990to2018_except2010.RDS") # actually it is for whole US but we are 
-                                                                                                                    # focusing on Chicago
   
   ##############################################################
   # Generating Synchrony Matrices
   ##############################################################
   print("Creating Synchrony Matrices for the United States of America.....")
+  
   print("Creating Synchrony Matrix for the United States of America, Pearson.....")
   if(force || !file.exists("data/csvFiles/AVHRR_Synchrony1990to2018USA.csv")){
     synchronyMatrix1990to2018DetrendedUS <- SynchronyMatrixCalculator(NDVIdetrendedDataArray1990, 1:29, 5)
     write.csv(synchronyMatrix1990to2018DetrendedUS, "data/csvFiles/AVHRR_Synchrony1990to2018USA.csv", row.names = FALSE)
+    saveRDS(synchronyMatrix1990to2018DetrendedUS,"data/csvFiles/AVHRR_Synchrony1990to2018USA.RDS")
   }else{
-    synchronyMatrix1990to2018DetrendedUS <- read.matrix("data/csvFiles/AVHRR_Synchrony1990to2018USA.csv", sep=",", skip=1)
-  }  
+    synchronyMatrix1990to2018DetrendedUS <- readRDS("data/csvFiles/AVHRR_Synchrony1990to2018USA.RDS")
+    #synchronyMatrix1990to2018DetrendedUS <- read.matrix("data/csvFiles/AVHRR_Synchrony1990to2018USA.csv", sep=",", skip=1)
+  } 
+  
   print("Creating Synchrony Matrix for the United States of America, Spearman .....")
   if(force || !file.exists("data/csvFiles/AVHRR_SynchronySpearman1990to2018USA.csv")){
     synchronyMatrix1990to2018DetrendedUS_Spearman <- SynchronyMatrixCalculator(NDVIdetrendedDataArray1990, 1:29, 5, "spearman")
