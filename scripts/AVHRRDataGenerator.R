@@ -19,7 +19,9 @@ AVHRRDataGenerator <- function(force = FALSE){
   #Raw NDVI data
   print("Loading in Raw NDVI Data.....")
   NDVIdataArray <- CSVInput("AVHRR_NDVI_WaterRemoved_", 30, 0, 1988, TRUE)
+  
   saveRDS(NDVIdataArray,"data/csvFiles/NDVIdataArray.RDS")
+  
   #Landscan
   print("Averaging Landscan Data.....")
   if(force || !file.exists("data/csvFiles/AVHRR_Landscan_Population_Average_2003to2004.csv")){
@@ -51,8 +53,11 @@ AVHRRDataGenerator <- function(force = FALSE){
       write.csv(NDVIdetrendedDataArray1990[,,i], paste("data/csvFiles/AVHRR_DetrendedNDVI1990to2018_", 1989+i, ".csv", sep=""), row.names = FALSE)
     }
   }else{
-    NDVIdetrendedDataArray1990 <- CSVInput("AVHRR_DetrendedNDVI1990to2018_", 29, 1, 1989)
+    NDVIdetrendedDataArray1990 <- CSVInput(pat="AVHRR_DetrendedNDVI1990to2018_", numFiles=29, skipNum=1, startYear=1989)
   }
+  
+  saveRDS(NDVIdetrendedDataArray1990,"data/csvFiles/NDVIdetrendedDataArray1990to2018.RDS")
+  
   print("Detrending NDVI data for Chicago: without Year = 2010.....")
   NDVIdetrendedDataArrayChicago <- array(data = NA, dim = c(4587, 2889, 28))
   if(force || !file.exists("data/csvFiles/AVHRR_DetrendedNDVILong_Chicago_1.csv")){
@@ -61,9 +66,12 @@ AVHRRDataGenerator <- function(force = FALSE){
       write.csv(NDVIdetrendedDataArrayChicago[,,i], paste("data/csvFiles/AVHRR_DetrendedNDVIChicago_", i, ".csv", sep=""), row.names = FALSE)
     }
   }else{
-    NDVIdetrendedDataArray1990 <- CSVInput("AVHRR_DetrendedNDVIChicago_", 28, 1, 0)
+    NDVIdetrendedDataArrayChicago <- CSVInput("AVHRR_DetrendedNDVIChicago_", 28, 1, 0)
   }
 
+  saveRDS(NDVIdetrendedDataArrayChicago,"data/csvFiles/NDVIdetrendedDataArrayChicago1990to2018_except2010.RDS") # actually it is for whole US but we are 
+                                                                                                                    # focusing on Chicago
+  
   ##############################################################
   # Generating Synchrony Matrices
   ##############################################################
