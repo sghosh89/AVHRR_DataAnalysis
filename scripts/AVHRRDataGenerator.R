@@ -91,34 +91,48 @@ AVHRRDataGenerator <- function(force = FALSE){
   if(force || !file.exists("data/csvFiles/AVHRR_SynchronySpearman1990to2018USA.csv")){
     synchronyMatrix1990to2018DetrendedUS_Spearman <- SynchronyMatrixCalculator(NDVIdetrendedDataArray1990, 1:29, 5, "spearman")
     write.csv(synchronyMatrix1990to2018DetrendedUS_Spearman, "data/csvFiles/AVHRR_SynchronySpearman1990to2018USA.csv", row.names = FALSE)
+    saveRDS(synchronyMatrix1990to2018DetrendedUS_Spearman,"data/csvFiles/AVHRR_SynchronySpearman1990to2018USA.RDS")
   }else{
-    synchronyMatrix1990to2018DetrendedUS_Spearman <- read.matrix("data/csvFiles/AVHRR_SynchronySpearman1990to2018USA.csv", sep=",", skip=1)
+    synchronyMatrix1990to2018DetrendedUS_Spearman <- readRDS("data/csvFiles/AVHRR_SynchronySpearman1990to2018USA.RDS")
+    #synchronyMatrix1990to2018DetrendedUS_Spearman <- read.matrix("data/csvFiles/AVHRR_SynchronySpearman1990to2018USA.csv", sep=",", skip=1)
   }
+  
   print("Creating Synchrony Matrix for the United States of America, Pearson, No 2010.....")
   if(force || !file.exists("data/csvFiles/AVHRR_SynchronyNo2010USA.csv")){
-    synchronyMatrixNo2010DetrendedUS <- SynchronyMatrixCalculator(NDVIdetrendedDataArray1990, 1:28, 5)
+    synchronyMatrixNo2010DetrendedUS <- SynchronyMatrixCalculator(NDVIdetrendedDataArrayChicago, 1:28, 5)
     write.csv(synchronyMatrixNo2010DetrendedUS, "data/csvFiles/AVHRR_SynchronyNo2010USA.csv", row.names = FALSE)
+    saveRDS(synchronyMatrixNo2010DetrendedUS,"data/csvFiles/AVHRR_SynchronyNo2010USA.RDS")
   }else{
-    synchronyMatrixNo2010DetrendedUS <- read.matrix("data/csvFiles/AVHRR_SynchronyNo2010USA.csv", sep=",", skip=1)
+    synchronyMatrixNo2010DetrendedUS<-readRDS("data/csvFiles/AVHRR_SynchronyNo2010USA.RDS")
+    #synchronyMatrixNo2010DetrendedUS <- read.matrix("data/csvFiles/AVHRR_SynchronyNo2010USA.csv", sep=",", skip=1)
   }  
+  
   print("Creating Synchrony Matrix for the United States of America, Spearman, No 2010.....")
   if(force || !file.exists("data/csvFiles/AVHRR_SynchronySpearmanNo2010USA.csv")){
-    synchronyMatrixNo2010DetrendedUS_Spearman <- SynchronyMatrixCalculator(NDVIdetrendedDataArray1990, 1:28, 5, "spearman")
+    synchronyMatrixNo2010DetrendedUS_Spearman <- SynchronyMatrixCalculator(NDVIdetrendedDataArrayChicago, 1:28, 5, "spearman")
     write.csv(synchronyMatrixNo2010DetrendedUS_Spearman, "data/csvFiles/AVHRR_SynchronySpearmanNo2010USA.csv", row.names = FALSE)
+    saveRDS(synchronyMatrixNo2010DetrendedUS_Spearman,"data/csvFiles/AVHRR_SynchronySpearmanNo2010USA.RDS")
   }else{
-    synchronyMatrixNo2010DetrendedUS_Spearman <- read.matrix("data/csvFiles/AVHRR_SynchronySpearmanNo2010USA.csv", sep=",", skip=1)
+    synchronyMatrixNo2010DetrendedUS_Spearman <- readRDS("data/csvFiles/AVHRR_SynchronySpearmanNo2010USA.RDS")
+    #synchronyMatrixNo2010DetrendedUS_Spearman <- read.matrix("data/csvFiles/AVHRR_SynchronySpearmanNo2010USA.csv", sep=",", skip=1)
   } 
+  
   print("Creating Copula Synchrony Matrices for the United States of America .....")
   if(force || !file.exists("data/csvFiles/AVHRR_LowerTailDependence1990to2018USA.csv") || !file.exists("data/csvFiles/AVHRR_UpperTailDependence1990to2018USA.csv")){
     tailedSynchronyMatrices <- SynchronyMatrixCalculator(NDVIdetrendedDataArray1990, 1:29, 5, "copula")
-    lowerTailedSynchronyMatrix <- tailedSynchronyMatrices[1]
-    upperTailedSynchronyMatrix <- tailedSynchronyMatrices[2]
+    lowerTailedSynchronyMatrix <- tailedSynchronyMatrices[[1]]
+    upperTailedSynchronyMatrix <- tailedSynchronyMatrices[[2]]
+    
+    saveRDS(tailedSynchronyMatrices,"data/csvFiles/AVHRR_Lower_and_UpperTailDependence1990to2018USA.RDS")
     
     write.csv(lowerTailedSynchronyMatrix, "data/csvFiles/AVHRR_LowerTailDependence1990to2018USA.csv", row.names = FALSE)
     write.csv(upperTailedSynchronyMatrix, "data/csvFiles/AVHRR_UpperTailDependence1990to2018USA.csv", row.names = FALSE)
   }else{
-    lowerTailedSynchronyMatrix <- read.matrix("data/csvFiles/AVHRR_LowerTailDependence1990to2018USA.csv")
-    upperTailedSynchronyMatrix <- read.matrix("data/csvFiles/AVHRR_UpperTailDependence1990to2018USA.csv")
+    tailedSynchronyMatrices <- readRDS("data/csvFiles/AVHRR_Lower_and_UpperTailDependence1990to2018USA.RDS") #it's a list of 2 matrices
+    lowerTailedSynchronyMatrix <- tailedSynchronyMatrices[[1]]
+    upperTailedSynchronyMatrix <- tailedSynchronyMatrices[[2]]
+    #lowerTailedSynchronyMatrix <- read.matrix("data/csvFiles/AVHRR_LowerTailDependence1990to2018USA.csv")
+    #upperTailedSynchronyMatrix <- read.matrix("data/csvFiles/AVHRR_UpperTailDependence1990to2018USA.csv")
   }
   
   ##############################################################
