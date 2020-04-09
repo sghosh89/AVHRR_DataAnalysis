@@ -30,4 +30,25 @@ dim(ndvi2000) #2889 4587 NDVI data is in comperable to lat lon format
 
 #-------------------------------------------------------------------------------------------------------
 
+# I have edited the bugs in Thomas code: Check completed for AVHRRDataGenerator.R
+
+# two Qs I need to get answers:
+
+# 1. Why do we need logit transform? log(x/1-x), where x is in between [0,1] ?
+
+# 2. For temporal averaging, Thomas chose raw NDVI (1990 - 2018), why you don't choose detrended ones?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
