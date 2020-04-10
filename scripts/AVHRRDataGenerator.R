@@ -18,9 +18,12 @@ source("scripts/SynchronyPreTransform.R")
 AVHRRDataGenerator <- function(force = FALSE){
   #Raw NDVI data
   print("Loading in Raw NDVI Data.....")
-  NDVIdataArray <- CSVInput("AVHRR_NDVI_WaterRemoved_", 30, 0, 1988, TRUE)
-  
-  saveRDS(NDVIdataArray,"data/csvFiles/NDVIdataArray.RDS")
+  if(force || !file.exists("data/csvFiles/NDVIdataArray.RDS")){
+    NDVIdataArray <- CSVInput("AVHRR_NDVI_WaterRemoved_", 30, 0, 1988, TRUE)
+    saveRDS(NDVIdataArray,"data/csvFiles/NDVIdataArray.RDS")
+  }else{
+    NDVIdataArray<-readRDS("data/csvFiles/NDVIdataArray.RDS")
+  }
   
   #Landscan
   print("Averaging Landscan Data.....")
