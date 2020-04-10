@@ -39,8 +39,11 @@ dim(ndvi2000) #2889 4587 NDVI data is in comperable to lat lon format
 # 2. For temporal averaging, Thomas chose raw NDVI (1990 - 2018), why you don't choose detrended ones?
 
 
+# when running Pearson synchrony mat for 1990-2018:
+# 50 such warnings() came like:
+# In cor(dataArray[i, j, years], dataArray[k, m, years],  ... : the standard deviation is zero
 
-
+# why?
 
 
 

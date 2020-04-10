@@ -24,8 +24,6 @@ ta_pscor<-function(x,y,perc_tail=0.5){
   mat<-cbind(x,y)
   mat<-na.omit(mat)
   
-  corVal <- cor(mat[,1], mat[,2], method = 'spearman')
-  
   if(nrow(mat)==0){
     
     #warning("No data points left after pairwise omitting NA's from x and y", call.=T, immediate. = T)
@@ -35,7 +33,9 @@ ta_pscor<-function(x,y,perc_tail=0.5){
     
   }else{
     
-    if(corVal<0){
+    corVal <- cor(mat[,1], mat[,2], method = 'spearman')
+    
+    if(corVal<0){ # for negatively correlated timeseries
       
       #warning("Negatively correlated", call.=T, immediate. = T)
       lta_pscor<-NA
