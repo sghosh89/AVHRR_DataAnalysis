@@ -35,23 +35,47 @@ dim(ndvi2000) #2889 4587 NDVI data is in comperable to lat lon format
 # two Qs I need to get answers:
 
 # 1. Why do we need logit transform? log(x/1-x), where x is in between [0,1] ?
+# normally distributed epsilon in linear regression makes response variable y (=m*x +b +epsilon) spread 
+# outside [0,1]
 
 # 2. For temporal averaging, Thomas chose raw NDVI (1990 - 2018), why you don't choose detrended ones?
-
+# mean(detrended ts)=0
 
 # when running Pearson synchrony mat for 1990-2018:
 # 50 such warnings() came like:
 # In cor(dataArray[i, j, years], dataArray[k, m, years],  ... : the standard deviation is zero
+# why? Because for 50 such pixels the values are same throughout the years.
 
-# why?
+#-------------------------------------------------------------------------------------------------------------
 
+# I am not sure about Dan's idea of making array with normalize ranking before to feed into ta_pscor function.
 
+# If we are going to be use that idea then 
+# I need :
+# All pixels within 5 radius have same position index for NA's [1:29] for years, because we will omit NA's pairwise
 
+# Now second issue: how to omit na? before ranking or after ranking?
+# see the rank documentation for argument "na.last"for controlling the treatment of NAs. 
+# If TRUE(default), missing values in the data are put last; 
+# if FALSE, they are put first; if NA, they are removed; if "keep" they are kept with rank NA.
 
+# I would prefer na.last = "keep" and then use na.omit = T within my ta_pscor function
 
+set.seed(101)
+z<-array(NA,dim=c(3,4,5))
+z[,,1]<-runif(12)
+z[,,2]<-runif(12)
+z[,,3]<-runif(12)
+z[,,4]<-runif(12)
+z[,,5]<-runif(12)
 
+a<-lapply(seq(dim(z)[3]), function(x) z[ , , x])
 
+b<-apply(simplify2array(a), 1:2, FUN=function(x){rank(x)/sum(is.finite(x))})
 
+a<-apply(z,MARGIN=c(1,2),FUN=function(x){rank(x)/sum(is.finite(x))})
 
+library(abind)
+asub(z[1,1,])
 
 
